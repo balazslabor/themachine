@@ -51,7 +51,7 @@ void loop()
     //Serial.println("Temperature is too low");
   }
   else {
-    if (setemp > (C - 5) && setemp < (C + 5)) {
+    if (setemp >= (C - 5) && setemp <= (C + 5)) {
       //-------------- servo lent!
       //Serial.println("teabag down");
       digitalWrite(servopin1, HIGH);
