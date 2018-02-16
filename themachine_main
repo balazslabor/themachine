@@ -1,11 +1,15 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define ONE_WIRE_BUS 2 
+#define ONE_WIRE_BUS 2
+
+
 
 OneWire ourWire(ONE_WIRE_BUS);
 
+
 DallasTemperature sensors(&ourWire);
+
 
 double C = 0;
 //int tempin = A3;  // analog pin used to connect the potentiometer
@@ -16,7 +20,7 @@ byte servopin2 = 5;
 int setemp = 0;
 int setime = 0;
 
-void setup() 
+void setup()
 {
   pinMode(ledpin, OUTPUT);
   //pinMode(tempin, INPUT);
@@ -28,21 +32,21 @@ void setup()
   //Serial.begin(9600);
   sensors.begin();
   // -------------manuálisan a víz fölötti magasságra kell rakni a teafiltert
-  //Serial.println("bag up");
+  //Serial.println("teabag up");
 
 }
 
 
 void loop() 
 {
-  setemp = analogRead(3);   //P3         
+  setemp = analogRead(3);   //P3         // reads the value of the potentiometer (value between 0 and 1023)
   setime = analogRead(2);   //P4
   setemp = map(setemp, 0, 1023, 50, 100);
   setime = map(setime, 0, 1023, 1, 15); //600 sec - 10 min
   //Serial.println(setemp);
   //Serial.println(setime);
 
-  sensors.requestTemperatures(); 
+  sensors.requestTemperatures(); // Send the command to get temperatures
   C = sensors.getTempCByIndex(0);
   //Serial.println(C);
 
@@ -53,7 +57,7 @@ void loop()
   else {
     if (setemp >= (C - 5) && setemp <= (C + 5)) {
       //-------------- servo lent!
-      //Serial.println("teabag down");
+      //Serial.println("bag down");
       digitalWrite(servopin1, HIGH);
       digitalWrite(servopin2, LOW);
       delay(3000);
@@ -75,9 +79,10 @@ void loop()
       delay(3000);
       digitalWrite(servopin1, LOW);
       digitalWrite(servopin2, LOW);
-      digitalWrite(ledpin, HIGH);
+      
       while (1) {
         delay(1000);
+        digitalWrite(ledpin, HIGH);
         //Serial.println("end");} //infinite cycle could be replaced by continous tepereature check
       }
     }
